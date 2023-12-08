@@ -6,6 +6,13 @@ body {
   background-color: antiquewhite;
 }
 
+#textInput {
+  color: transparent;
+  caret-color: black;
+  background-color: transparent;
+  border: none;
+}
+
 h1 {
   text-align: center;
   font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;

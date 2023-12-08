@@ -141,6 +141,8 @@ function solve() {
     valids.innerHTML = updatedvalids;
     validNum.innerHTML = "Valid Solutions: " + solList.length + "  Optimal Guess: " + solList[0];
 
-
-
+    const textField = document.getElementById('textInput');
+    if (textField) {
+        textField.value = "";
+    }
 }
