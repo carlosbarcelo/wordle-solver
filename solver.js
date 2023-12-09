@@ -5,7 +5,7 @@ function resetList() {
 }
 
 const buttonGrid = document.getElementById('buttonGrid');
-const buttonLength = 30;
+const buttonLength = 25;
 let currentButtonIndex = 0;
 
 // Create buttons and add them to the grid container
@@ -78,12 +78,12 @@ function grey(letter) {
     }
 }
 
-function doubleGrey(letter, occs) {
+function doubleGrey(letter, pos, occs) {
     console.log("doubleGrey " + letter);
     for (let i = 0; i < solList.length; i++) {
         let temp = solList[i];
         let apps = temp.split(letter).length - 1;
-        if (apps > occs) {
+        if (apps > occs || solList[i][pos] == letter) {
             solList.splice(i, 1);
             i--;
         }
@@ -127,40 +127,44 @@ function solve() {
 
     resetList();
 
-    let usedY = '';
-    let usedG = '';
-
     const buttons = buttonGrid.querySelectorAll('button');
 
-    for (let i = 0; i < buttonLength && buttons[i].textContent !== ''; i++) {
-        if (buttons[i].style.backgroundColor === 'green') {
-            green(buttons[i].textContent, i % 5);
-            usedG += buttons[i].textContent;
-        }
-    }
-    for (let i = 0; i < buttonLength && buttons[i].textContent !== ''; i++) {
-        if (buttons[i].style.backgroundColor === 'yellow') {
-            let tempG = usedG, tempY = usedY;
-            let occs = tempG.split(buttons[i].textContent).length + tempY.split(buttons[i].textContent).length - 2;
-            if (occs == 0) {
-                yellow(buttons[i].textContent, i % 5);
-                usedY += buttons[i].textContent;
-            }
-            else {
-                doubleYellow(buttons[i].textContent, i % 5, occs);
-                usedY += buttons[i].textContent;
+
+    for (let j = 0; j < buttonLength / 5; j++) {
+
+        let usedY = '';
+        let usedG = '';
+
+        for (let i = j * 5; i < j * 5 + 5 && buttons[i].textContent !== ''; i++) {
+            if (buttons[i].style.backgroundColor === 'green') {
+                green(buttons[i].textContent, i % 5);
+                usedG += buttons[i].textContent;
             }
         }
-    }
-    for (let i = 0; i < buttonLength && buttons[i].textContent !== ''; i++) {
-        if (buttons[i].style.backgroundColor === 'grey' || buttons[i].style.backgroundColor === '') {
-            let tempG = usedG, tempY = usedY;
-            let occs = tempG.split(buttons[i].textContent).length + tempY.split(buttons[i].textContent).length - 2;
-            if (occs == 0) {
-                grey(buttons[i].textContent);
+        for (let i = j * 5; i < j * 5 + 5 && buttons[i].textContent !== ''; i++) {
+            if (buttons[i].style.backgroundColor === 'yellow') {
+                let tempG = usedG, tempY = usedY;
+                let occs = tempG.split(buttons[i].textContent).length + tempY.split(buttons[i].textContent).length - 2;
+                if (occs == 0) {
+                    yellow(buttons[i].textContent, i % 5);
+                    usedY += buttons[i].textContent;
+                }
+                else {
+                    doubleYellow(buttons[i].textContent, i % 5, occs);
+                    usedY += buttons[i].textContent;
+                }
             }
-            else {
-                doubleGrey(buttons[i].textContent, occs);
+        }
+        for (let i = j * 5; i < j * 5 + 5 && buttons[i].textContent !== ''; i++) {
+            if (buttons[i].style.backgroundColor === 'grey' || buttons[i].style.backgroundColor === '') {
+                let tempG = usedG, tempY = usedY;
+                let occs = tempG.split(buttons[i].textContent).length + tempY.split(buttons[i].textContent).length - 2;
+                if (occs == 0) {
+                    grey(buttons[i].textContent);
+                }
+                else {
+                    doubleGrey(buttons[i].textContent, i % 5, occs);
+                }
             }
         }
     }
